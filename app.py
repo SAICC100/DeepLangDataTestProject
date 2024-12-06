@@ -1,10 +1,22 @@
 import gradio as gr
 import traceback
-
+import json
 
 def hello_world_fn(username: str) -> tuple[str, str]:
     try:
-        return f"HELLO WORLD\n{username.upper()}", "SUCCESS"
+        a = username.replace(" ","").replace("\t","").replace("\n","").split("<p>")[1:]
+        c = []
+        t = r"</p>"
+        for i in a:
+            if t not in i:
+                continue
+            b = i.split(t)
+            if "<" in b[0]:
+                c.append(b[0].split("<")[0])
+            else:
+                c.append(b[0])
+        out = "\n".join(c)
+        return out, "SUCCESS"
     except Exception as e:
         return f"opus! some exception {e}\n{traceback.format_exc()}", "FAILED"
 
